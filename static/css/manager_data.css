@@ -26,7 +26,6 @@ label {
 
 .disabled {
     pointer-events: none;
-    background-color: #9c9c9c;
 }
 
 

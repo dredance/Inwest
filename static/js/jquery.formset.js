@@ -261,9 +261,6 @@
                     delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
 
 
-
-
-
                 applyExtraClasses(row, formCount);
                 row.insertBefore(buttonRow).show();
                 row.find(childElementSelector).each(function() {
@@ -328,11 +325,16 @@
 
 function actualProjektOkres(okres, psp, newOkres){
     $("[id$='projekt']").val(psp);
-    $("[id$='okres']").val(okres);
+    $("[id$='-okres']").val(okres);
+    $("#id_okres").val(okres);
     if(newOkres){
         $("[id$='INITIAL_FORMS']").val(0);
     };
 };
+
+
+$("#id_projekt").css('background-color','#c1bebe')
+$("#id_okres").css('background-color','#c1bebe')
 
 
 $('.errorlist').addClass("alert alert-warning")

@@ -97,10 +97,9 @@ class ManagerDataView(PermissionRequiredMixin, View):
     permission_required = 'api.add_km'
 
     def get(self, request):
-        ctx = {'new_form': NewDataForm(initial={'okres':'2020-07-31', 'download_data': True}, prefix='insert_form'),
-             'update_form': UpdateDataForm(initial={"okres": '2020-06-30'}, prefix='update_form'),
-             'projects': Projekt.objects.all()
-             }
+        ctx = {'new_form': NewDataForm(initial={'download_data': True}, prefix='insert_form'),
+             'update_form': UpdateDataForm(prefix='update_form'),
+             'projects': Projekt.objects.all()}
         return render(request, 'manager_data.html', ctx)
 
     def post(self, request):
@@ -109,7 +108,7 @@ class ManagerDataView(PermissionRequiredMixin, View):
             if form_update.is_valid():
                 psp = form_update.cleaned_data['projekt']
                 okres = form_update.cleaned_data['okres']
-                return redirect('multiform-update', psp=int(psp.id), okres=okres.strftime('%Y-%m-%d'))
+                return redirect('multiform-update', psp=psp.id, okres=okres.strftime('%Y-%m-%d'))
         elif 'deleteBtn' in request.POST:
             form_delete = UpdateDataForm(request.POST, prefix='update_form')
             if form_delete.is_valid():
@@ -125,9 +124,10 @@ class ManagerDataView(PermissionRequiredMixin, View):
                 psp = form_insert.cleaned_data['projekt']
                 okres = form_insert.cleaned_data['okres']
                 download_data = form_insert.cleaned_data['download_data']
-                return redirect('multiform-create', psp=int(psp.id), okres=okres.strftime('%Y-%m-%d'), prev_data=download_data)
+                return redirect('multiform-create', psp=psp.id, okres=okres.strftime('%Y-%m-%d'), prev_data=download_data)
         ctx = {'new_form': NewDataForm(request.POST, prefix='insert_form'),
-                'update_form': UpdateDataForm(request.POST, prefix='update_form')}
+                'update_form': UpdateDataForm(request.POST, prefix='update_form'),
+                'projects': Projekt.objects.all()}
         return render(request, 'manager_data.html', ctx)
 
 
@@ -199,6 +199,7 @@ class UpdateMultiFormView(PermissionRequiredMixin, View):
     def get(self, request, psp, okres):
         okres = datetime.strptime(okres, '%Y-%m-%d')
         ctx = {'okres': okres, 'psp':psp, 'new_okres': False}
+        print(SlFormSet(queryset=SL.objects.filter(projekt_id=psp, okres=okres), prefix='sl_form'))
         ctx['km_form'] = KamienieMiloweForm(instance=KamienieMilowe.objects.filter(projekt_id=psp, okres=okres).first())
         ctx['sl_form'] = SlFormSet(queryset=SL.objects.filter(projekt_id=psp, okres=okres), prefix='sl_form')
         ctx['sm_form'] = SmFormSet(queryset=SM.objects.filter(projekt_id=psp, okres=okres), prefix='sm_form')

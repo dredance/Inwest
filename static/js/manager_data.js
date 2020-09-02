@@ -15,22 +15,6 @@ $('input#id_update_form-okres').replaceWith('<select name="update_form-okres" cl
                                             ' id="id_update_form-okres"></select>')
 
 
-$(function(){
-  $.ajax({
-    url: 'http://127.0.0.1:8000/api/okresy',
-    type: "GET",
-    dataType: "json"
-  }).done(function(results){
-    var selectValues = results[0].okresy
-    $.each(selectValues, function(key, value) {
-     $('#id_update_form-okres')
-         .append($("<option></option>")
-                    .attr("value", value)
-                    .text(value));
-    });
-  });
-});
-
 $('#id_update_form-projekt').on("change", function (){
   $.ajax({
     url: `http://127.0.0.1:8000/api/okresy/?psp=${$(this).val()}`,
@@ -46,8 +30,8 @@ $('#id_update_form-projekt').on("change", function (){
                     .text(value));
     });
   });
-
 });
+
 
 $('#id_insert_form-projekt').on("change", function (){
   $.ajax({
@@ -57,6 +41,7 @@ $('#id_insert_form-projekt').on("change", function (){
   }).done(function(results){
     if (results[0].okresy) {
       $('#id_insert_form-okres').addClass("disabled")
+      $('#id_insert_form-okres').css('background-color','#c1bebe')
       $('#id_insert_form-download_data').attr("checked", "")
       $('#id_insert_form-download_data').parent().show()
       var dateMax = new Date(results[0].okresy[0])
@@ -64,6 +49,7 @@ $('#id_insert_form-projekt').on("change", function (){
       $('#id_insert_form-okres').val(formatDate(okresNew))
     } else {
       $('#id_insert_form-okres').removeClass("disabled")
+      $('#id_insert_form-okres').css('background-color', 'white')
       $('#id_insert_form-download_data').attr("checked", false)
       $('#id_insert_form-download_data').parent().hide()
     }

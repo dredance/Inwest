@@ -41,10 +41,10 @@ class CustomTableForm(forms.ModelForm):
 
     class Meta:
         fields = '__all__'
+        widgets = {'sily_wlasne': forms.CheckboxInput()}
 
 
-
-# New + Update
+    # New + Update
 SlFormSet = modelformset_factory(SL, form=CustomTableForm, extra=0)
 SmFormSet = modelformset_factory(SM, form=CustomTableForm, extra=0)
 UkFormSet = modelformset_factory(UK, form=CustomTableForm, extra=0)

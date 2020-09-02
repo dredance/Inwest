@@ -2,12 +2,12 @@ from django.db import models
 
 
 class Projekt(models.Model):
-    psp = models.IntegerField(verbose_name="Numer ewidencyjny PSP")
+    psp = models.PositiveIntegerField(verbose_name="Numer ewidencyjny PSP")
     nazwa = models.CharField(max_length=40, verbose_name="Nazwa gazociągu [od-do]")
-    dlugosc = models.IntegerField(blank=True, null=True, verbose_name="Długość gazociągu [mb]")
+    dlugosc = models.PositiveIntegerField(blank=True, null=True, verbose_name="Długość gazociągu [mb]")
     dlugosc_rur = models.CharField(blank=True, null=True,max_length=40, verbose_name="Długości rur [mb]")
     srednica = models.CharField(blank=True, null=True, max_length=40, verbose_name="Średnica gazociągu [mm]")
-    odcinki = models.IntegerField(blank=True, null=True, verbose_name="Ilość odcinków próbnych")
+    odcinki = models.PositiveIntegerField(blank=True, null=True, verbose_name="Ilość odcinków próbnych")
     kierownik_gs = models.CharField(blank=True, null=True, max_length=40, verbose_name="Kierownik Projektu")
     wrb = models.CharField(blank=True, null=True, max_length=40, verbose_name="Wykonawca Robót Budowlanych")
     wni = models.CharField(blank=True, null=True, max_length=40, verbose_name="Wykonawca Nadzoru Inwestorskiego")
@@ -72,9 +72,9 @@ class OB(models.Model):
     proba_real = models.DateField(blank=True, null=True, verbose_name="Próba szczelności Rzeczywiste")
     spgw_real = models.DateField(blank=True, null=True, verbose_name="Spoiny Gwarantowane Rzeczywiste")
     oto_real = models.DateField(blank=True, null=True, verbose_name="Odbiór Techniczny Obiektu Rzeczywiste")
-    ilosc = models.IntegerField(verbose_name="Ilość Calostyków [szt]")
-    wykonanie_okres = models.IntegerField(verbose_name="Wykonianie w danym okresie [szt]")
-    wykonanie_all = models.IntegerField(verbose_name="Wykonianie narastająco [szt]")
+    ilosc = models.PositiveIntegerField(verbose_name="Ilość Calostyków [szt]")
+    wykonanie_okres = models.PositiveIntegerField(verbose_name="Wykonianie w danym okresie [szt]")
+    wykonanie_all = models.PositiveIntegerField(verbose_name="Wykonianie narastająco [szt]")
     projekt = models.ForeignKey(Projekt, on_delete=models.CASCADE)
 
 
@@ -88,9 +88,9 @@ class SL(models.Model):
     koniec_real = models.DateField(blank=True, null=True, verbose_name='Zakończenie Rzeczywiste')
     wniosek_real = models.DateField(blank=True, null=True, verbose_name="Wnioski o podwykonawcę Rzeczywiste")
     umowa_real = models.DateField(blank=True, null=True, verbose_name="Umowa o podwykonawcę Rzeczywiste")
-    ilosc = models.IntegerField(verbose_name="Ilość spoin [szt]")
-    wykonanie_okres = models.IntegerField(verbose_name="Wykonianie w danym okresie [szt]")
-    wykonanie_all = models.IntegerField(verbose_name="Wykonianie narastająco [szt]")
+    ilosc = models.PositiveIntegerField(verbose_name="Ilość spoin [szt]")
+    wykonanie_okres = models.PositiveIntegerField(verbose_name="Wykonianie w danym okresie [szt]")
+    wykonanie_all = models.PositiveIntegerField(verbose_name="Wykonianie narastająco [szt]")
     projekt = models.ForeignKey(Projekt, on_delete=models.CASCADE)
 
 
@@ -104,9 +104,9 @@ class SM(models.Model):
     koniec_real = models.DateField(blank=True, null=True, verbose_name='Zakończenie Rzeczywiste')
     wniosek_real = models.DateField(blank=True, null=True, verbose_name="Wnioski o podwykonawcę Rzeczywiste")
     umowa_real = models.DateField(blank=True, null=True, verbose_name="Umowa o podwykonawcę Rzeczywiste")
-    ilosc = models.IntegerField(verbose_name="Ilość spoin [szt]")
-    wykonanie_okres = models.IntegerField(verbose_name="Wykonianie w danym okresie [szt]")
-    wykonanie_all = models.IntegerField(verbose_name="Wykonianie narastająco [szt]")
+    ilosc = models.PositiveIntegerField(verbose_name="Ilość spoin [szt]")
+    wykonanie_okres = models.PositiveIntegerField(verbose_name="Wykonianie w danym okresie [szt]")
+    wykonanie_all = models.PositiveIntegerField(verbose_name="Wykonianie narastająco [szt]")
     projekt = models.ForeignKey(Projekt, on_delete=models.CASCADE)
 
 
@@ -119,9 +119,9 @@ class UK(models.Model):
     koniec_baza = models.DateField(verbose_name='Zakończenie Harm. Bazowy')
     koniec_plan = models.DateField(verbose_name='Zakończenie Harm. Aktualny')
     koniec_real = models.DateField(blank=True, null=True, verbose_name='Zakończenie Rzeczywiste')
-    ilosc = models.IntegerField(verbose_name="Ilość układki [mb]")
-    wykonanie_okres = models.IntegerField(verbose_name="Wykonianie w danym okresie [mb]")
-    wykonanie_all = models.IntegerField(verbose_name="Wykonianie narastająco [mb]")
+    ilosc = models.PositiveIntegerField(verbose_name="Ilość układki [mb]")
+    wykonanie_okres = models.PositiveIntegerField(verbose_name="Wykonianie w danym okresie [mb]")
+    wykonanie_all = models.PositiveIntegerField(verbose_name="Wykonianie narastająco [mb]")
     projekt = models.ForeignKey(Projekt, on_delete=models.CASCADE)
 
 
@@ -129,8 +129,8 @@ class MB(models.Model):
     okres = models.DateField(verbose_name="Okres raportowy")
     nazwa = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nazwa przejścia')
     rodzaj = models.CharField(max_length=60, blank=True, null=True, verbose_name='Rodzaj metody')
-    start_kilometraz = models.IntegerField(verbose_name="Start metody Kilometraż [format: 32 005 m]")
-    dlugosc = models.IntegerField(verbose_name="Długość przejścia [mb]")
+    start_kilometraz = models.PositiveIntegerField(verbose_name="Start metody Kilometraż [format: 32 005 m]")
+    dlugosc = models.PositiveIntegerField(verbose_name="Długość przejścia [mb]")
     start_plan = models.DateField(verbose_name='Rozpoczęcie Harm. Aktualny')
     koniec_plan = models.DateField(verbose_name='Zakończenie Harm. Aktualny')
     start_real = models.DateField(blank=True, null=True, verbose_name='Rozpoczęcie Rzeczywiste')
