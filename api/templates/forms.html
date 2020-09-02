@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}{% endblock title %}
+{% block content %}
+{% if submitted %}
+    <p class="success">
+        Your message was submitted successfully. Thank you.
+    </p>
+
+{% else %}
+    <h2>Dane:</h2>
+    {% bootstrap_messages %}
+    <form method="POST" novalidate>
+        {% csrf_token %}
+      {% bootstrap_form form layout='horizontal' %}
+      {% buttons %}
+        <button type="submit" class="btn btn-primary">
+          Dodaj/Aktualizuj
+        </button>
+      {% endbuttons %}
+
+    </form>
+{% endif %}
+{% endblock content %}
+
+
+
+
+<!--form.as_table – w postaci tabelki,-->
+<!--form.as_p – w postaci paragrafów,-->
+<!--form.as_ul – w postaci listy.-->

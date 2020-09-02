@@ -1,0 +1,46 @@
+{% load static %}
+{% url 'home' as path_to_home %}
+{% url 'manager-data' as path_to_manager %}
+{% url 'analiza' as path_to_analiza %}
+{% url 'sl' as path_to_sl %}
+{% url 'sm' as path_to_sm %}
+{% url 'uk' as path_to_uk %}
+{% url 'ob' as path_to_ob %}
+{% url 'mb' as path_to_mb %}
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white z-depth-2">
+  <a class="navbar-band" href="#">
+    <img src="{% static 'images/logo.png' %}" id="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if request.path == path_to_home %}active{% endif %}">
+        <a class="nav-link" href="{{path_to_home}}">STRONA GŁÓWNA <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item {% if request.path == path_to_manager %}active{% endif %}">
+        <a class="nav-link" href="{{path_to_manager}}">MANAGER DANYCH <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          API
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{{path_to_sl}}">Spawanie Liniowe</a>
+            <a class="dropdown-item" href="{{path_to_sm}}">Spawanie Montażowe</a>
+            <a class="dropdown-item" href="{{path_to_uk}}">Układka</a>
+            <a class="dropdown-item" href="{{path_to_ob}}">Obiekty</a>
+            <a class="dropdown-item" href="{{path_to_mb}}">Metody Bezwykopowe</a>
+            <a class="dropdown-item" href="{{path_to_analiza}}">Analiza Projektu</a>
+        </div>
+      </li>
+    </ul>
+    {% if user.is_authenticated %}
+         Zalogowany:&nbsp {{ user }} <a href="{% url "logout" %}?next={{ request.path }}" style="color: darkgray">&nbsp Wyloguj</a>
+    {% else %}
+         <a href="{% url "login" %}?next={{ request.path }}" style="color: darkgray">Zaloguj</a>
+    {% endif %}
+</nav>

@@ -1,0 +1,36 @@
+ul {
+    list-style-type: none;
+}
+
+input {
+    border: none;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+label {
+    font-weight: normal;
+    /*text-transform : uppercase;*/
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.form-group{
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.hide {
+    display: none
+}
+
+.disabled {
+    pointer-events: none;
+    background-color: #9c9c9c;
+}
+
+
+td{
+    margin: 3px;
+    padding: 5px;
+}

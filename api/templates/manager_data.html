@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% load static %}
+
+{% block style %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/manager_data.css' %}">
+    {{ form.media }}
+{% endblock %}
+
+{% block title %}Manager danych{% endblock title %}
+
+{% block content %}
+    <h1>Manager Danych</h1>
+    <hr>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li  {% if message.tags %} class="alert alert-{{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+        <hr>
+    {% endif %}
+
+    <div class="new_form">
+        <h3>Nowy Formularz Raportu</h3>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <div class="form-inline">
+                {% bootstrap_form new_form layout='vertical' %}
+                <input type="submit" class="btn btn-primary" name="insertBtn" value="Przejdź">
+            </div>
+            <hr>
+        <h3>Aktualizacja Formularza Raportu</h3>
+            <div class="form-inline">
+                {% bootstrap_form update_form layout='vertical' %}
+                <input type="submit" class="btn btn-primary" name="updateBtn" value="Przejdź">
+                <input type="submit" class="btn btn-dark" name="deleteBtn" value="Usuń">
+            </div>
+            <hr>
+        </form>
+    </div>
+
+    <h3>Lista Projektów</h3>
+    <table class="table table-striped">
+        {% for project in projects %}
+                <tr><td>{{ forloop.counter }}.</td><td>{{ project }}</td>
+                    <td><a href="{% url 'update-project' project.pk %}">Edycja</a></td>
+                    <td><a href="{% url 'delete-project' project.pk %}?next={{ request.path }}">Usuń</a></td>
+                </tr>
+        {% endfor %}
+    </table>
+    <a class="btn btn-light" href="{% url 'add-project' %}">Dodaj Projekt</a>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'js/manager_data.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}login{% endblock title %}
+
+{% block content %}
+<div class='block-center'>
+    {% if error_message %}
+        <div class="messages">
+            <div class="alert alert-warning">
+                {{ error_message }}
+            </div>
+        </div>
+    {% endif %}
+    <form class="text-center border border-light p-5 col-md-3" action="" method="POST" autocomplete="off">
+        {% csrf_token %}
+        {{ form }}
+        <button type='submit' class="btn btn-info btn-block my-4">Zaloguj</button>
+    </form>
+</div>
+{% endblock content %}

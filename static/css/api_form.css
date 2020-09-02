@@ -1,0 +1,66 @@
+ul {
+    list-style-type: none;
+}
+
+input {
+    border: none;
+}
+
+label {
+    font-weight: normal;
+    /*text-transform : uppercase*/
+}
+
+.hide {
+    display: none
+}
+
+td, th {
+    text-align: center;
+    vertical-align: auto;
+}
+
+
+td input[type=date] {
+    max-width: 140px;
+}
+td input[type=number]{
+    max-width: 90px;
+}
+
+.wrapper {
+  position: relative;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+h4,tr th:nth-child(1), tr th:nth-child(2), tr td:nth-child(1), tr td:nth-child(2), .add-row{
+  position: sticky;
+  position: -webkit-sticky;
+  background-color: white;
+}
+
+h4,tr th:nth-child(1), tr td:nth-child(1), .add-row{
+  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
+  left: 0px;
+}
+
+tr th:nth-child(2), tr td:nth-child(2){
+  /*width: 250px;*/
+  min-width: 150px;
+  max-width: 350px;
+  left: 30px;
+}
+
+tbody tr td:last-child{
+    text-align: left;
+}
+
+.disabled {
+    pointer-events: none;
+    background-color: #929292;
+    color: dimgrey;
+    border-color: green;
+}

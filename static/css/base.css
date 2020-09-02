@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap");
+
+html {
+	height: 100vh;
+}
+
+body {
+    font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    /*font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif, serif, "Times New Roman", Times;*/
+	height: 100%;
+	width: 100%;
+	padding-top: 56px;
+	position: relative;
+}
+
+/*   MENU   */
+.nav-item.active {
+    font-weight: bold;
+    font-color: #f2f2f2;
+}
+nav {
+    text-align: center;
+    position: fixed !important;
+    top: 0 !important; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    left: 0;
+}
+/* Change background on mouse-over*/
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
+/* Main content */
+div.content {
+  /*margin-top: 60px; !* Add a top margin to avoid content overlay *!*/
+    padding-top: 20px;
+    margin: 20px;
+}
+
+#content{
+    padding-top: 20px;
+    margin: 20px;
+}
+
+#logo{
+    width: auto;
+    height: 60px;
+    text-align: center;
+}
+/* END MENU */
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #929292;
+  color: white;
+  text-align: center;
+  height: auto;
+}
+
+.footer a {
+    color: white;
+}
+
+.hero-image {
+	background-image: url("https://porr-group.com/fileadmin/s_porr-group/Presse/2018/PORR_Pipeline_Lwowek-Odolanow_Foto_c_PORR.JPG");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	position: relative;
+	height: 100%;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+}
+
+.block-center form{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
