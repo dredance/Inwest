@@ -347,7 +347,7 @@ class Analiza:
         ### ZWROCENIE DATAFRAME
         return df_dane
 
-mb_df = MetodyBezwykopowe(MB).result
+
 
 try:
     sl_df = RobotyPodstawowe(SL).result('df_group')
