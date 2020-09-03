@@ -11,9 +11,9 @@ from api.models import KamienieMilowe, SL, SM, MB, OB, UK
 import pandas as pd
 import datetime as dt
 from api.services import Service
-from django.db.models import Count, Max, Min, Sum
+from django.db.models import Max, Min, Sum
 from sqlalchemy import create_engine
-from Inwest.settings import DATABASES
+from Inwest.settings import default_dburl, DATABASES
 
 class RobotyPodstawowe:
     def __init__(self, model):

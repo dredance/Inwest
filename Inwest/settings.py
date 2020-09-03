@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
+from dj_database_url import parse as dburl
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -20,13 +22,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4c0w!sj!egj*(=g215_v_2dqqauvp%3p=%xmdz277sc%kwf)u@'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gasproject.herokuapp.com', 'localhost:8000']
 
 
 # Application definition
@@ -85,15 +84,11 @@ WSGI_APPLICATION = 'Inwest.wsgi.application'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
-DATABASES = {
-    'default': {
-        'HOST': '127.0.0.1',
-        'NAME': 'inwestycje',
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'PASSWORD': 'coderslab',
-    }
-}
+default_dburl = f'postgresql://postgres:coderslab@localhost:5432/inwestycje'
+
+DATABASES = {'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
+
+
 
 
 # Password validation
@@ -137,7 +132,6 @@ STATICFILES_DIRS = [
 os.path.join(BASE_DIR, "static")
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(os.path.dirname(
 BASE_DIR), "static_cdn", "static_root")
 
@@ -145,4 +139,4 @@ BASE_DIR), "static_cdn", "static_root")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(
 BASE_DIR), "static_cdn", "media_root")
-MEDIA_URL = '/media/'
+
