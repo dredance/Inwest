@@ -1,1 +1,1 @@
-web: gunicorn Inwest.wsgi --log--file -
+web: gunicorn Inwest.wsgi --log-file -
