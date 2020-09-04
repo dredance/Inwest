@@ -227,25 +227,25 @@ class MetodyBezwykopowe:
 
 
     def sql_dfmbi(self, okres, tab_nazwa):
-        q_mb_ilosc = f'''SELECT projekt_id, '{okres}' AS okres, rodzaj, Count(rodzaj) ilosc, sum(dlugosc) ilosc_mb, 
+        q_mb_ilosc = f'''SELECT projekt_id, '{okres}' AS okres, Count(*) ilosc, sum(dlugosc) ilosc_mb, 
         min(start_plan) start_plan, min(start_real) start_real, max(koniec_plan) koniec_plan, max(koniec_real) koniec_real
         FROM {tab_nazwa}
-        GROUP BY projekt_id, rodzaj
+        GROUP BY projekt_id
         '''
-        q_mb_zak = f'''SELECT projekt_id, '{okres}' AS okres, rodzaj, Count(rodzaj) ilosc_zak, sum(dlugosc) ilosc_mb_zak
+        q_mb_zak = f'''SELECT projekt_id, '{okres}' AS okres, Count(*) ilosc_zak, sum(dlugosc) ilosc_mb_zak
         FROM {tab_nazwa}
         WHERE koniec_real IS NOT NULL AND koniec_real <= '{okres}'
-        GROUP BY projekt_id, rodzaj
+        GROUP BY projekt_id
         '''
-        q_mb_rozp = f'''SELECT projekt_id,'{okres}' AS okres, rodzaj, Count(rodzaj) ilosc_rozp, sum(dlugosc) ilosc_mb_rozp
+        q_mb_rozp = f'''SELECT projekt_id,'{okres}' AS okres, Count(*) ilosc_rozp, sum(dlugosc) ilosc_mb_rozp
         FROM {tab_nazwa}
         WHERE start_real IS NOT NULL AND koniec_real IS NULL AND start_real <='{okres}'
-        GROUP BY projekt_id, rodzaj
+        GROUP BY projekt_id
         '''
-        q_mb_plan = f'''SELECT projekt_id, '{okres}' AS okres, rodzaj, Count(rodzaj) ilosc_plan, sum(dlugosc) ilosc_mb_plan
+        q_mb_plan = f'''SELECT projekt_id, '{okres}' AS okres, Count(*) ilosc_plan, sum(dlugosc) ilosc_mb_plan
         FROM {tab_nazwa}
         WHERE koniec_plan <'{okres}'
-        GROUP BY projekt_id, rodzaj
+        GROUP BY projekt_id
         '''
         q_mb = f'''SELECT projekt_id, okres, min(start_plan) start_plan,min(start_real) start_real, 
         max(koniec_plan) koniec_plan,max(koniec_real) koniec_real,sum(ilosc) ilosc,
@@ -348,7 +348,6 @@ class Analiza:
         return df_dane
 
 
-
 try:
     sl_df = RobotyPodstawowe(SL).result('df_group')
 except:
@@ -383,3 +382,4 @@ try:
     analiza_df = Analiza(KamienieMilowe, sl_df,sm_df,uk_df,mb_df,ob_df_gr).result
 except:
     analiza_df = pd.DataFrame({'Test': []})
+
