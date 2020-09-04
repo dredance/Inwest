@@ -330,7 +330,7 @@ class Analiza:
             lambda row: max(row['koniec_prognoza_sl']+dt.timedelta(days=30*Analiza.MIN_WARUNKI_KM.get('sl-sm',0)),
                                                                       row['koniec_prognoza_sm']), axis=1)
         df_dane['ot_prognoza'] = df_dane.apply(
-            lambda row: max([row[f'koniec_prognoza_{i}']+dt.timedelta(days=30*Analiza.MIN_WARUNKI_KM.get(f'{i}-ot',0))
+            lambda row: max([row[f'koniec_prognoza_{i}']+dt.timedelta(days=round(30*Analiza.MIN_WARUNKI_KM.get(f'{i}-ot',0),0))
                                                                 for i in skroty]+[row['ot_plan']]), axis=1)
         df_dane['ok_prognoza'] = df_dane.apply(
             lambda row: max(row['ot_prognoza']+dt.timedelta(days=30*Analiza.MIN_WARUNKI_KM.get('ot-ok',0)),
