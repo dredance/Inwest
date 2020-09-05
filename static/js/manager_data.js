@@ -17,7 +17,7 @@ $('input#id_update_form-okres').replaceWith('<select name="update_form-okres" cl
 
 $('#id_update_form-projekt').on("change", function (){
   $.ajax({
-    url: `https://gasproject.herokuapp.com/api/okresy/?psp=${$(this).val()}`, // `http://127.0.0.1:8000/api/okresy/?psp=${$(this).val()}`,
+    url: `http://127.0.0.1:8000/api/okresy/?psp=${$(this).val()}`, // `https://gasproject.herokuapp.com/api/okresy/?psp=${$(this).val()}`,
     type: "GET",
     dataType: "json"
   }).done(function(results){
@@ -35,7 +35,7 @@ $('#id_update_form-projekt').on("change", function (){
 
 $('#id_insert_form-projekt').on("change", function (){
   $.ajax({
-    url: `https://gasproject.herokuapp.com/api/okresy/?psp=${$(this).val()}`, //``http://127.0.0.1:8000/api/okresy/?psp=${$(this).val()}``,
+    url: `http://127.0.0.1:8000/api/okresy/?psp=${$(this).val()}`, //`https://gasproject.herokuapp.com/api/okresy/?psp=${$(this).val()}`,
     type: "GET",
     dataType: "json"
   }).done(function(results){

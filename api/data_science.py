@@ -13,7 +13,11 @@ import datetime as dt
 from api.services import Service
 from django.db.models import Max, Min, Sum
 from sqlalchemy import create_engine
-from Inwest.settings import default_dburl, DATABASES
+from Inwest.settings import DATABASES
+
+
+DAYS_IN_MONTH = 21
+
 
 class RobotyPodstawowe:
     def __init__(self, model):
@@ -50,7 +54,7 @@ class RobotyPodstawowe:
         df['proc_okres'] = round(df['wykonanie_okres'] / df['ilosc'], 3)
         df[f'proc_all'] = round(df['wykonanie_all'] / df['ilosc'], 3)
         # Obliczenie srednie wykonanie w okresie miesiac_dni_robocze=21
-        df['sr_wykonanie_okres'] = round(df['wykonanie_okres'] / 21, 1)
+        df['sr_wykonanie_okres'] = round(df['wykonanie_okres'] / DAYS_IN_MONTH, 1)
         # Obliczenie srednie wykonanie w okresie od początku spawania do dniaRaportu/koniec jak 1
         data_start = df.apply(
             lambda row: row['start_plan'] if row['start_real'] == None
@@ -189,9 +193,9 @@ class MetodyBezwykopowe:
         rok = [rok for rok in range(data_start.year, data_stop.year + 1)]
         okres_list = []
         for r in rok:
-            for m in list(range(data_start.month, 13)):
-                if dt.date(r, m, 1) <= data_stop:
-                    end_day = self.last_day_of_month(any_day=dt.date(r, m, 1))
+            for m in list(range(1, 13)):
+                end_day = self.last_day_of_month(any_day=dt.date(r, m, 1))
+                if end_day <= data_stop and end_day >= data_start:
                     okres_list.append(dt.datetime.strftime(end_day, '%Y-%m-%d'))
         return okres_list
 
@@ -209,6 +213,7 @@ class MetodyBezwykopowe:
 
     @property
     def warunki(self):
+        
         if not self.zakonczone_projekty: warunek = f"NOT (projekt_id = 00001 AND okres > '2000-01-01')"
         i = 0
         for key, value in self.zakonczone_projekty.items():
@@ -226,26 +231,29 @@ class MetodyBezwykopowe:
         return warunek
 
 
-    def sql_dfmbi(self, okres, tab_nazwa):
-        q_mb_ilosc = f'''SELECT projekt_id, '{okres}' AS okres, Count(*) ilosc, sum(dlugosc) ilosc_mb, 
+    def sql_dfmbi(self, okres):
+        last_proj_okres= '''SELECT * FROM api_mb JOIN (SELECT max(okres) AS okres, projekt_id FROM api_mb
+        GROUP BY projekt_id) as max_okres USING(projekt_id, okres)'''
+        
+        q_mb_ilosc = f'''SELECT projekt_id, max(okres), '{okres}' AS okres, Count(*) ilosc, sum(dlugosc) ilosc_mb, 
         min(start_plan) start_plan, min(start_real) start_real, max(koniec_plan) koniec_plan, max(koniec_real) koniec_real
-        FROM {tab_nazwa}
-        GROUP BY projekt_id
+        FROM ({last_proj_okres}) AS last_proj_okres
+        GROUP BY projekt_id, okres
         '''
-        q_mb_zak = f'''SELECT projekt_id, '{okres}' AS okres, Count(*) ilosc_zak, sum(dlugosc) ilosc_mb_zak
-        FROM {tab_nazwa}
+        q_mb_zak = f'''SELECT projekt_id, max(okres), '{okres}' AS okres, Count(*) ilosc_zak, sum(dlugosc) ilosc_mb_zak
+        FROM ({last_proj_okres}) AS last_proj_okres
         WHERE koniec_real IS NOT NULL AND koniec_real <= '{okres}'
-        GROUP BY projekt_id
+        GROUP BY projekt_id, okres
         '''
-        q_mb_rozp = f'''SELECT projekt_id,'{okres}' AS okres, Count(*) ilosc_rozp, sum(dlugosc) ilosc_mb_rozp
-        FROM {tab_nazwa}
+        q_mb_rozp = f'''SELECT projekt_id, max(okres),'{okres}' AS okres, Count(*) ilosc_rozp, sum(dlugosc) ilosc_mb_rozp
+        FROM ({last_proj_okres}) AS last_proj_okres
         WHERE start_real IS NOT NULL AND koniec_real IS NULL AND start_real <='{okres}'
-        GROUP BY projekt_id
+        GROUP BY projekt_id, okres
         '''
-        q_mb_plan = f'''SELECT projekt_id, '{okres}' AS okres, Count(*) ilosc_plan, sum(dlugosc) ilosc_mb_plan
-        FROM {tab_nazwa}
+        q_mb_plan = f'''SELECT projekt_id, max(okres), '{okres}' AS okres, Count(*) ilosc_plan, sum(dlugosc) ilosc_mb_plan
+        FROM ({last_proj_okres}) AS last_proj_okres
         WHERE koniec_plan <'{okres}'
-        GROUP BY projekt_id
+        GROUP BY projekt_id, okres
         '''
         q_mb = f'''SELECT projekt_id, okres, min(start_plan) start_plan,min(start_real) start_real, 
         max(koniec_plan) koniec_plan,max(koniec_real) koniec_real,sum(ilosc) ilosc,
@@ -268,8 +276,7 @@ class MetodyBezwykopowe:
     def lista_df_mbf(self):
         SQL_TAB = ["api_mb"]
         okres_list = self.range_ends_days(self.data_start, self.data_stop)
-        lista_df_mb = [self.sql_dfmbi(okres, tab_nazwa) for okres in okres_list
-                       for tab_nazwa in SQL_TAB]
+        lista_df_mb = [self.sql_dfmbi(okres) for okres in okres_list]
         return lista_df_mb
 
     @property
@@ -348,6 +355,7 @@ class Analiza:
         return df_dane
 
 
+
 try:
     sl_df = RobotyPodstawowe(SL).result('df_group')
 except:
@@ -382,4 +390,3 @@ try:
     analiza_df = Analiza(KamienieMilowe, sl_df,sm_df,uk_df,mb_df,ob_df_gr).result
 except:
     analiza_df = pd.DataFrame({'Test': []})
-
